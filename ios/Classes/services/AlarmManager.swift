@@ -51,7 +51,10 @@ class AlarmManager: NSObject {
         if cancelNotif {
             NotificationManager.shared.cancelNotification(id: id)
         }
-        NotificationManager.shared.dismissNotification(id: id)
+        
+        if let config = self.alarms[id], !config.settings.notificationSettings.keepNotificationAfterAlarmEnds {
+            NotificationManager.shared.dismissNotification(id: id)
+        }
 
         await AlarmRingManager.shared.stop()
 
